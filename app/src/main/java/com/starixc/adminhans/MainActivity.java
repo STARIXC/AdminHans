@@ -46,10 +46,20 @@ private MenuInflater menuInflater;
 
 
         setSupportActionBar(toolbar);
+       // navigationView = findViewById(R.id.navigationView);
+        drawerLayout = findViewById(R.id.drawer_layout);
+
         navController = Navigation.findNavController(this, R.id.fragment);
-        nav_view = (NavigationView)findViewById(R.id.nav_view);
-        drawerLayout= (DrawerLayout) findViewById(R.id.drawer_layout);
-        NavigationUI.setupWithNavController(nav_view,navController);
+
+        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout);
+
+        NavigationUI.setupWithNavController(nav_view, navController);
+
+       // navController = Navigation.findNavController(this, R.id.fragment);
+      //  nav_view = (NavigationView)findViewById(R.id.nav_view);
+
+       // drawerLayout= (DrawerLayout) findViewById(R.id.drawer_layout);
+      //  NavigationUI.setupWithNavController(nav_view,navController);
 //        NavigationUI.setupActionBarWithNavController(
 //                this,
 //                navController,drawerLayout

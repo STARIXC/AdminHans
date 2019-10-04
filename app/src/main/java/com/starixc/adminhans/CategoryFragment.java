@@ -1,10 +1,10 @@
 package com.starixc.adminhans;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +15,11 @@ import android.widget.ImageView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CategoryFragment extends Fragment implements View.OnClickListener{
+public class CategoryFragment extends Fragment {
 
     private ImageView whisky,wine,spirits,beers,champagne,chasers;
     private View categoryView;
+    private FragmentTransaction fr;
     public CategoryFragment() {
         // Required empty public constructor
     }
@@ -38,21 +39,58 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
         chasers=(ImageView) categoryView.findViewById(R.id.chasers);
 
 
-        whisky.setOnClickListener(this);
+        whisky.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fr=getFragmentManager().beginTransaction();
+                fr.replace(R.id.fragment,new AddProductFragment());
+                fr.commit();
 
-        wine.setOnClickListener(this);
-        spirits.setOnClickListener(this);
-        beers.setOnClickListener(this);
-        champagne.setOnClickListener(this);
-        chasers.setOnClickListener(this);
+            }
+        });
 
-        return  categoryView;
-
+        wine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fr=getFragmentManager().beginTransaction();
+                fr.replace(R.id.fragment,new AddProductFragment());
+                fr.commit();
+            }
+        });
+        spirits.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fr=getFragmentManager().beginTransaction();
+                fr.replace(R.id.fragment,new AddProductFragment());
+                fr.commit();
+            }
+        });
+        beers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fr=getFragmentManager().beginTransaction();
+                fr.replace(R.id.fragment,new AddProductFragment());
+                fr.commit();
+            }
+        });
+        champagne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fr=getFragmentManager().beginTransaction();
+                fr.replace(R.id.fragment,new AddProductFragment());
+                fr.commit();
+            }
+        });
+        chasers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fr=getFragmentManager().beginTransaction();
+                fr.replace(R.id.fragment,new AddProductFragment());
+                fr.commit();
+            }
+        });
+return categoryView;
     }
 
-    @Override
-    public void onClick(View view) {
 
-
-    }
 }
