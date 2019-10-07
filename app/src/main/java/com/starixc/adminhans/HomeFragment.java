@@ -42,7 +42,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 fr=getFragmentManager().beginTransaction();
-                fr.replace(R.id.fragment,new CategoryFragment());
+                fr.replace(R.id.fragment,new CategoryFragment()).addToBackStack(null);
                 fr.commit();
             }
         });
@@ -50,7 +50,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 fr=getFragmentManager().beginTransaction();
-                fr.replace(R.id.fragment,new ProductsFragment());
+                fr.replace(R.id.fragment,new ProductsFragment()).addToBackStack(null);
                 fr.commit();
             }
         });
@@ -58,7 +58,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 fr=getFragmentManager().beginTransaction();
-                fr.replace(R.id.fragment,new OrdersFragment());
+                fr.replace(R.id.fragment,new OrdersFragment()).addToBackStack(null);
                 fr.commit();
             }
         });
@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 fr=getFragmentManager().beginTransaction();
-                fr.replace(R.id.fragment,new FeedBackFragment());
+                fr.replace(R.id.fragment,new FeedBackFragment()).addToBackStack(null);
                 fr.commit();
             }
         });
@@ -74,7 +74,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 fr=getFragmentManager().beginTransaction();
-                fr.replace(R.id.fragment,new UsersFragment());
+                fr.replace(R.id.fragment,new UsersFragment()).addToBackStack(null);
                 fr.commit();
             }
         });
@@ -82,7 +82,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 fr=getFragmentManager().beginTransaction();
-                fr.replace(R.id.fragment,new AddProductFragment());
+                fr.replace(R.id.fragment,new AddProductFragment()).addToBackStack(null);
                 fr.commit();
             }
         });
