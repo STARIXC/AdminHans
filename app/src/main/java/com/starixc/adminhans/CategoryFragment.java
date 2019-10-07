@@ -4,6 +4,7 @@ package com.starixc.adminhans;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
@@ -19,7 +20,8 @@ public class CategoryFragment extends Fragment {
 
     private ImageView whisky,wine,spirits,beers,champagne,chasers;
     private View categoryView;
-    private FragmentTransaction fr;
+    private FragmentManager fm;
+    private FragmentTransaction ft;
     public CategoryFragment() {
         // Required empty public constructor
     }
@@ -42,9 +44,14 @@ public class CategoryFragment extends Fragment {
         whisky.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fr=getFragmentManager().beginTransaction();
-                fr.replace(R.id.fragment,new AddProductFragment());
-                fr.commit();
+                Bundle bundle = new Bundle();
+                bundle.putString("category","whisky");
+                fm=getActivity().getSupportFragmentManager();
+                ft =fm.beginTransaction();
+                AddProductFragment addProductFragment= new AddProductFragment();
+                addProductFragment.setArguments(bundle);
+                ft.replace(R.id.fragment,addProductFragment) .addToBackStack(null);
+                ft.commit();
 
             }
         });
@@ -52,41 +59,66 @@ public class CategoryFragment extends Fragment {
         wine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fr=getFragmentManager().beginTransaction();
-                fr.replace(R.id.fragment,new AddProductFragment());
-                fr.commit();
+                Bundle bundle = new Bundle();
+                bundle.putString("category","wine");
+                fm=getActivity().getSupportFragmentManager();
+                ft =fm.beginTransaction();
+                AddProductFragment addProductFragment= new AddProductFragment();
+                addProductFragment.setArguments(bundle);
+                ft.replace(R.id.fragment,addProductFragment) .addToBackStack(null);
+                ft.commit();
             }
         });
         spirits.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fr=getFragmentManager().beginTransaction();
-                fr.replace(R.id.fragment,new AddProductFragment());
-                fr.commit();
+                Bundle bundle = new Bundle();
+                bundle.putString("category","spirits");
+                fm=getActivity().getSupportFragmentManager();
+                ft =fm.beginTransaction();
+                AddProductFragment addProductFragment= new AddProductFragment();
+                addProductFragment.setArguments(bundle);
+                ft.replace(R.id.fragment,addProductFragment) .addToBackStack(null);
+                ft.commit();
             }
         });
         beers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fr=getFragmentManager().beginTransaction();
-                fr.replace(R.id.fragment,new AddProductFragment());
-                fr.commit();
+                Bundle bundle = new Bundle();
+                bundle.putString("category","beers");
+                fm=getActivity().getSupportFragmentManager();
+                ft =fm.beginTransaction();
+                AddProductFragment addProductFragment= new AddProductFragment();
+                addProductFragment.setArguments(bundle);
+                ft.replace(R.id.fragment,addProductFragment) .addToBackStack(null);
+                ft.commit();
             }
         });
         champagne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fr=getFragmentManager().beginTransaction();
-                fr.replace(R.id.fragment,new AddProductFragment());
-                fr.commit();
+                Bundle bundle = new Bundle();
+                bundle.putString("category","champagne");
+                fm=getActivity().getSupportFragmentManager();
+                ft =fm.beginTransaction();
+                AddProductFragment addProductFragment= new AddProductFragment();
+                addProductFragment.setArguments(bundle);
+                ft.replace(R.id.fragment,addProductFragment) .addToBackStack(null);
+                ft.commit();
             }
         });
         chasers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fr=getFragmentManager().beginTransaction();
-                fr.replace(R.id.fragment,new AddProductFragment());
-                fr.commit();
+                Bundle bundle = new Bundle();
+                bundle.putString("category","chasers");
+                fm=getActivity().getSupportFragmentManager();
+                ft =fm.beginTransaction();
+                AddProductFragment addProductFragment= new AddProductFragment();
+                addProductFragment.setArguments(bundle);
+                ft.replace(R.id.fragment,addProductFragment) .addToBackStack(null);
+                ft.commit();
             }
         });
 return categoryView;

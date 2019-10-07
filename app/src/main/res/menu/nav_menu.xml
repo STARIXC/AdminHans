@@ -21,6 +21,10 @@
         android:id="@+id/nav_Notification"
         android:icon="@drawable/feedback"
         android:title="Feed Back" />
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/ic_person_black_24dp"
+        android:title="My Profile" />
 
 
 </menu>

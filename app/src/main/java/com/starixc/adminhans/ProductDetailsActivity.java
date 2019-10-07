@@ -62,9 +62,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 if (dataSnapshot.exists())
                 {
                     Products products =dataSnapshot.getValue(Products.class);
-
-
-
                     productName.setText(products.getName());
                     productPrice.setText(products.getPrice());
                     productDescription.setText(products.getDescription());

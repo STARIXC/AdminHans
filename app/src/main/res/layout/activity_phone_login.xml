@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".LoginActivity">
+    tools:context=".PhoneLoginActivity">
 
 
     <RelativeLayout
@@ -41,65 +41,52 @@
 
 
             <EditText
-                android:id="@+id/editTextEmail"
+                android:id="@+id/editTextPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:layout_margin="@dimen/margin_medium"
-                android:hint="email"
-                android:inputType="textEmailAddress"
+                android:hint="Enter Phone Number"
+                android:inputType="phone"
                 android:paddingBottom="15dp"
+                android:textSize="18sp"
+
+                android:layout_marginBottom="@dimen/margin_md"
                 android:textColorHint="@color/colorAccent" />
 
             <EditText
-                android:id="@+id/editTextPassword"
+                android:id="@+id/editTextVerify"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:hint="password"
+                android:hint="Enter Verification Code"
                 android:inputType="textPassword"
                 android:paddingBottom="15dp"
-                android:textColorHint="@color/colorAccent" />
+                android:textColorHint="@color/colorAccent"
+                android:visibility="invisible"/>
 
             <Button
-                android:id="@+id/buttonLogin"
+                android:id="@+id/buttonSendVerification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="7dp"
                 android:background="@drawable/buttons"
-                android:text="Login"
+                android:text="Send Verification Code"
                 android:textAllCaps="false"
-                android:textColor="@color/colorAccent" />
-
-            <TextView
-                android:id="@+id/textViewSignup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="15dp"
-                android:text="Don't have account? Sign Up"
-                android:textAlignment="center"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:textColor="@color/colorAccent" />
-            <TextView
-                android:id="@+id/alternativeLogin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Or Sign In With"
-                android:paddingBottom="@dimen/margin_md"
-                android:textAlignment="center"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:textColor="@color/grey_90" />
+                android:textColor="@color/whiteTextColor" />
             <Button
-                android:id="@+id/buttonLoginPhone"
+                android:id="@+id/buttonVerification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="7dp"
                 android:background="@drawable/buttons"
-                android:text="Login with Your Phone Number"
+                android:text="Verify Phone Number"
                 android:textAllCaps="false"
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/whiteTextColor"
+                android:visibility="invisible"/>
+
+
 
 
         </LinearLayout>
