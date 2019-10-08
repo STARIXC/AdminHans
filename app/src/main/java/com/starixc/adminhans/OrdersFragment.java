@@ -1,9 +1,11 @@
 package com.starixc.adminhans;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -68,15 +70,17 @@ public class OrdersFragment extends Fragment {
                         .build();
         FirebaseRecyclerAdapter<Order, OrderViewHolder> adapter = new FirebaseRecyclerAdapter<Order, OrderViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull OrderViewHolder orderViewHolder, int i, @NonNull final Order order) {
+            protected void onBindViewHolder(@NonNull OrderViewHolder orderViewHolder, final int i, @NonNull final Order order) {
                 orderViewHolder.txtOrderNo.setText("OrderNo :"+order.getOrderNo());
                 orderViewHolder.txtOrderDate.setText(order.getDate()+ " Time :" +order.getTime());
                 orderViewHolder.txtPrice.setText("Total Amount" +order.getTotalAmount());
                 orderViewHolder.orderDetBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
+                         String uID= getRef(i).getKey();
                         Bundle bundle = new Bundle();
-                        bundle.putString("uid",order.getPhone());
+                        bundle.putString("uid",uID);
                         bundle.putString("orderNo",order.getOrderNo());
                         bundle.putString("apartment",order.getApartment());
                         bundle.putString("date",order.getDate());
@@ -96,7 +100,35 @@ public class OrdersFragment extends Fragment {
                         ft.commit();
                     }
                 });
+                orderViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
+                        CharSequence options[] =new CharSequence[]{
+                                "Yes",
+                                "No"
+
+                        };
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setTitle("Have you shipped this order products?");
+                        builder.setItems(options, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                if (i==0){
+                                    String uID = getRef(i).getKey();
+                                    RemoverOrder(uID);
+
+                                }
+                                else {
+                                    //finish();
+                                }
+
+                            }
+                        });
+                        builder.show();
+                    }
+                });
 
             }
 
@@ -113,4 +145,8 @@ public class OrdersFragment extends Fragment {
         adapter.startListening();
 
     }
+    private void RemoverOrder(String uID) {
+        ordersRef.child(uID).removeValue();
+    }
 }
+

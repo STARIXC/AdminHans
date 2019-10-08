@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
+
         android:layout_weight="1">
 
         <ImageView
@@ -45,7 +46,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:layout_margin="@dimen/margin_medium"
                 android:hint="email"
                 android:inputType="textEmailAddress"
                 android:paddingBottom="15dp"
@@ -81,25 +81,25 @@
                 android:textAlignment="center"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textColor="@color/colorAccent" />
-            <TextView
-                android:id="@+id/alternativeLogin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Or Sign In With"
-                android:paddingBottom="@dimen/margin_md"
-                android:textAlignment="center"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:textColor="@color/grey_90" />
-            <Button
-                android:id="@+id/buttonLoginPhone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="7dp"
-                android:background="@drawable/buttons"
-                android:text="Login with Your Phone Number"
-                android:textAllCaps="false"
-                android:textColor="@color/colorAccent" />
+<!--            <TextView-->
+<!--                android:id="@+id/alternativeLogin"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Or Sign In With"-->
+<!--                android:paddingBottom="@dimen/margin_md"-->
+<!--                android:textAlignment="center"-->
+<!--                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"-->
+<!--                android:textColor="@color/grey_90" />-->
+<!--            <Button-->
+<!--                android:id="@+id/buttonLoginPhone"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_margin="7dp"-->
+<!--                android:background="@drawable/buttons"-->
+<!--                android:text="Login with Your Phone Number"-->
+<!--                android:textAllCaps="false"-->
+<!--                android:textColor="@color/colorAccent" />-->
 
 
         </LinearLayout>
