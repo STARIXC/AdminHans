@@ -3,6 +3,7 @@ package com.starixc.adminhans;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -13,8 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.starixc.adminhans.Model.Cart;
+import com.starixc.adminhans.Model.Order;
+import com.starixc.adminhans.viewHolder.CartViewHolder;
 
 
 /**
@@ -71,7 +77,8 @@ public class ViewOrderItemFragment extends Fragment {
 
 
 
-        cartListRef = FirebaseDatabase.getInstance().getReference().child("CartList").child("Admin View");
+        cartListRef = FirebaseDatabase.getInstance().getReference().child("CartList").child("Admin View").child(orderID);
+
 
 
 
@@ -80,5 +87,64 @@ public class ViewOrderItemFragment extends Fragment {
 
 
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        FirebaseRecyclerOptions<Cart> options=
+                new FirebaseRecyclerOptions.Builder<Cart>()
+                        .setQuery(cartListRef,Cart.class)
+                        .build();
+
+        FirebaseRecyclerAdapter<Cart, CartViewHolder> adapter = new FirebaseRecyclerAdapter<Cart, CartViewHolder>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull CartViewHolder cartViewHolder, int i, @NonNull Cart cart) {
+
+            }
+
+            @NonNull
+            @Override
+            public CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                return null;
+            }
+        };
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
