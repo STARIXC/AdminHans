@@ -50,9 +50,10 @@ public class OrdersFragment extends Fragment {
         ordersView= inflater.inflate(R.layout.fragment_orders, container, false);
 
         ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders");
+
         ordersList =ordersView.findViewById(R.id.order_list_recycler);
-        ordersList.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getContext());
+        //ordersList.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(getActivity());
         ordersList.setLayoutManager(layoutManager);
 
 
@@ -73,7 +74,7 @@ public class OrdersFragment extends Fragment {
             protected void onBindViewHolder(@NonNull OrderViewHolder orderViewHolder, final int i, @NonNull final Order order) {
                 orderViewHolder.txtOrderNo.setText("OrderNo :"+order.getOrderNo());
                 orderViewHolder.txtOrderDate.setText(order.getDate()+ " Time :" +order.getTime());
-                orderViewHolder.txtPrice.setText("Total Amount" +order.getTotalAmount());
+                orderViewHolder.txtPrice.setText("Total Amount :" +order.getTotalAmount()+ " /=");
                 orderViewHolder.orderDetBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

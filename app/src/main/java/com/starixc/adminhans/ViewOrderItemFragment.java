@@ -96,10 +96,10 @@ public class ViewOrderItemFragment extends Fragment {
                 {
                     Order order =dataSnapshot.getValue(Order.class);
 
-                    orderNo.setText(order.getOrderNo());
-                    orderDate.setText(order.getDate());
-                    orderPrice.setText(order.getTotalAmount());
-                    orderName.setText(order.getName());
+                    orderNo.setText("OrderNo :" +order.getOrderNo());
+                    orderDate.setText("Date"+order.getDate());
+                    orderPrice.setText("Price"+order.getTotalAmount());
+                    orderName.setText(""+order.getName());
                     orderStreet.setText(order.getStreet());
                     orderLocation.setText(order.getDeliveryLocation());
                     orderApartment.setText(order.getApartment());
