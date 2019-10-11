@@ -15,8 +15,12 @@ import android.view.ViewGroup;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.squareup.picasso.Picasso;
 import com.starixc.adminhans.Model.Products;
 import com.starixc.adminhans.viewHolder.ProductViewHolder;
@@ -29,8 +33,12 @@ public class ProductsFragment extends Fragment {
 
     private View productsView;
     private RecyclerView myProductsList;
-    private DatabaseReference ProductsRef;
+    private ProductAdapter productAdapter;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference ProductsRef = db.collection("Products");
      RecyclerView.LayoutManager layoutManager;
+   // private RecyclerView.Adapter ProductAdapter;
+
     public ProductsFragment() {
         // Required empty public constructor
     }
@@ -41,56 +49,33 @@ public class ProductsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         productsView= inflater.inflate(R.layout.fragment_products, container, false);
-        myProductsList =(RecyclerView) productsView.findViewById(R.id.recycler_menu);
-        myProductsList.setLayoutManager(new GridLayoutManager(getContext(),2));
-        ProductsRef = FirebaseDatabase.getInstance().getReference().child("Products");
-        //        recyclerView = findViewById(R.id.recycler_menu);
-//        recyclerView.setHasFixedSize(true);
-//        layoutManager = new GridLayoutManager(this, 2);
-//        recyclerView.setLayoutManager(layoutManager);
+       setUpRecyclerView();
         return productsView;
     }
+
+    private void setUpRecyclerView() {
+        Query query = ProductsRef.orderBy("category", Query.Direction.DESCENDING);
+        FirestoreRecyclerOptions<Products> options = new FirestoreRecyclerOptions.Builder<Products>()
+                .setQuery(query,Products.class)
+                .build();
+        productAdapter = new ProductAdapter(options);
+        myProductsList =(RecyclerView) productsView.findViewById(R.id.recycler_menu);
+       myProductsList.setHasFixedSize(true);
+        myProductsList.setLayoutManager(new GridLayoutManager(getContext(),2));
+        myProductsList.setAdapter(productAdapter);
+
+
+    }
+
     @Override
     public void onStart() {
         super.onStart();
-
-        FirebaseRecyclerOptions<Products> options =
-                new FirebaseRecyclerOptions.Builder<Products>()
-                        .setQuery(ProductsRef, Products.class)
-                        .build();
-
-
-        FirebaseRecyclerAdapter<Products, ProductViewHolder> adapter =
-                new FirebaseRecyclerAdapter<Products, ProductViewHolder>(options) {
-                    @Override
-                    protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull final Products model) {
-                        holder.txtProductName.setText(model.getName());
-                        // holder.txtProductDescription.setText(model.getDescription());
-                        holder.txtProductPrice.setText("Ksh. " + model.getPrice() + "/=");
-                        Picasso.get().load(model.getImage()).into(holder.imageView);
-
-                        holder.itemView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-//                                Intent intent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
-//                                intent.putExtra("pid", model.getPid());
-//                                startActivity(intent);
-                            }
-                        });
-
-
-                    }
-
-                    @NonNull
-                    @Override
-                    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_items_layout, parent, false);
-                        ProductViewHolder holder = new ProductViewHolder(view);
-                        return holder;
-                    }
-                };
-        myProductsList.setAdapter(adapter);
-        adapter.startListening();
+        productAdapter.startListening();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        productAdapter.stopListening();
+    }
 }

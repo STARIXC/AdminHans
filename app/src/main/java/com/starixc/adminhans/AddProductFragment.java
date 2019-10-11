@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -54,6 +57,7 @@ public class AddProductFragment extends Fragment {
     private DatabaseReference ProductsRef;
     private ProgressDialog loadingBar;
     private View addView;
+    private  FirebaseFirestore db = FirebaseFirestore.getInstance();
     public AddProductFragment() {
         // Required empty public constructor
     }
@@ -87,6 +91,10 @@ public class AddProductFragment extends Fragment {
         AddnewProductBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                loadingBar.show();
+//                loadingBar.setTitle("Saving Product");
+//                loadingBar.setCanceledOnTouchOutside(false);
+//                loadingBar.setMessage("Please wait while we save records");
                 ValidateProductData();
             }
         });
@@ -198,30 +206,55 @@ public class AddProductFragment extends Fragment {
         productMap.put("price",Price);
         productMap.put("size",Size);
 
-        ProductsRef.child(productRandomKey).updateChildren(productMap)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+
+        db.collection("Products")
+                .add(productMap)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
-                            Toast.makeText(getActivity(), "Product added successfully", Toast.LENGTH_SHORT).show();
-                            FragmentManager fm=getActivity().getSupportFragmentManager();
-                           FragmentTransaction ft =fm.beginTransaction();
-                            ProductsFragment productFragment= new ProductsFragment();
+                    public void onSuccess(DocumentReference documentReference) {
+                        //loadingBar.dismiss();
+                        Toast.makeText(getActivity(), "Product added successfully", Toast.LENGTH_SHORT).show();
+                        FragmentManager fm=getActivity().getSupportFragmentManager();
+                        FragmentTransaction ft =fm.beginTransaction();
+                        ProductsFragment productFragment= new ProductsFragment();
 
-                            ft.replace(R.id.fragment,productFragment).addToBackStack(null);
-                            ft.commit();
-                            //Intent intent = new Intent(AdminAddNewProduct.this, AdminDashBoard.class);
-                            //startActivity(intent);
-                           // loadingBar.dismiss();
-
-                        }else{
-                          //  loadingBar.dismiss();
-                         String message=task.getException().toString();
-                         Toast.makeText(getActivity(), "Error: "+message, Toast.LENGTH_SHORT).show();
-
-                        }
+                        ft.replace(R.id.fragment,productFragment).addToBackStack(null);
+                        ft.commit();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                      //  Log.w(TAG, "Error adding document", e);
+                        Toast.makeText(getActivity(), "Error: "+e, Toast.LENGTH_SHORT).show();
                     }
                 });
+
+//        ProductsRef.child(productRandomKey).updateChildren(productMap)
+//                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        if (task.isSuccessful()){
+//                            Toast.makeText(getActivity(), "Product added successfully", Toast.LENGTH_SHORT).show();
+//                            FragmentManager fm=getActivity().getSupportFragmentManager();
+//                           FragmentTransaction ft =fm.beginTransaction();
+//                            ProductsFragment productFragment= new ProductsFragment();
+//
+//                            ft.replace(R.id.fragment,productFragment).addToBackStack(null);
+//                            ft.commit();
+//                            //Intent intent = new Intent(AdminAddNewProduct.this, AdminDashBoard.class);
+//                            //startActivity(intent);
+//                           // loadingBar.dismiss();
+//
+//                        }else{
+//                          //  loadingBar.dismiss();
+//                         String message=task.getException().toString();
+//                         Toast.makeText(getActivity(), "Error: "+message, Toast.LENGTH_SHORT).show();
+//
+//                        }
+//                    }
+//                });
 
     }
 

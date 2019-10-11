@@ -98,5 +98,13 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="mixers">Mixers</string>
+    <string name="ram">Ram</string>
+    <string name="brandy_cognac"><![CDATA[Brandy & Cognac]]></string>
+    <string name="gin">Gin</string>
+    <string name="Liquer">Liquor</string>
+    <string name="tequila">Tequila</string>
+    <string name="vodka">Vodka</string>
+    <string name="others">Others</string>
 
 </resources>
