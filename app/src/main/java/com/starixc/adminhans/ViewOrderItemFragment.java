@@ -54,12 +54,7 @@ public class ViewOrderItemFragment extends Fragment {
         orderDate=(TextView) ordersDetView.findViewById(R.id.idOrderDetDate);
         orderPrice=(TextView) ordersDetView.findViewById(R.id.txtOrderPrice);
         orderName=(TextView) ordersDetView.findViewById(R.id.shippingName);
-        orderStreet=(TextView) ordersDetView.findViewById(R.id.shippingStreet);
-        orderLocation=(TextView) ordersDetView.findViewById(R.id.shippingLocation);
-        orderApartment=(TextView) ordersDetView.findViewById(R.id.shippingAppartment);
-        orderHouseNo=(TextView) ordersDetView.findViewById(R.id.shippingHouseNo);
         orderPhone=(TextView) ordersDetView.findViewById(R.id.shippingPhone);
-        orderInstruction=(TextView) ordersDetView.findViewById(R.id.shippingInstruction);
         orderState=(TextView) ordersDetView.findViewById(R.id.txtState) ;
 
         Bundle bundle = getArguments();
@@ -96,17 +91,17 @@ public class ViewOrderItemFragment extends Fragment {
                 {
                     Order order =dataSnapshot.getValue(Order.class);
 
-                    orderNo.setText("OrderNo :" +order.getOrderNo());
-                    orderDate.setText("Date"+order.getDate());
-                    orderPrice.setText("Price"+order.getTotalAmount());
-                    orderName.setText(""+order.getName());
-                    orderStreet.setText(order.getStreet());
-                    orderLocation.setText(order.getDeliveryLocation());
-                    orderApartment.setText(order.getApartment());
-                    orderHouseNo.setText(order.getHouseNo());
-                    orderPhone.setText(order.getPhone());
-                    orderState.setText(order.getState());
-                    orderInstruction.setText(order.getInstruction());
+//                    orderNo.setText("OrderNo :" +order.getOrderNo());
+//                    orderDate.setText("Date"+order.getDate());
+//                    orderPrice.setText("Price"+order.getTotalAmount());
+//                    orderName.setText(""+order.getName());
+//                    orderStreet.setText(order.getStreet());
+//                    orderLocation.setText(order.getDeliveryLocation());
+//                    orderApartment.setText(order.getApartment());
+//                    orderHouseNo.setText(order.getHouseNo());
+//                    orderPhone.setText(order.getPhone());
+//                    orderState.setText(order.getState());
+//                    orderInstruction.setText(order.getInstruction());
 
                 }
             }

@@ -1,4 +1,4 @@
-package com.starixc.adminhans;
+package com.starixc.adminhans.Adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +11,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.squareup.picasso.Picasso;
 import com.starixc.adminhans.Model.Products;
+import com.starixc.adminhans.R;
 import com.starixc.adminhans.viewHolder.ProductViewHolder;
 
 

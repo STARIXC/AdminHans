@@ -134,7 +134,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
                 android:layout_marginTop="8dp"/>
             <TextView android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Shipping"
+                android:text="Customer"
                 android:textSize="16dp"
                 android:textStyle="bold"
                />
@@ -150,44 +150,13 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
                 android:text="Name"
                 android:textSize="12dp"
                 android:textColor="@color/gen_black"/>
-            <TextView
-                android:id="@+id/shippingStreet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Street"
-                android:textSize="12dp"
-                android:textColor="@color/gen_black"/>
-            <TextView
-                android:id="@+id/shippingLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Street"
-                android:textSize="12dp"
-                android:textColor="@color/gen_black"/>
-            <TextView
-                android:id="@+id/shippingAppartment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Apartment"
-                android:textSize="12dp"
-                android:textColor="@color/gen_black"/>
-            <TextView
-                android:id="@+id/shippingHouseNo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Apartment"
-                android:textSize="12dp"
-                android:textColor="@color/gen_black"/>
+
             <TextView
                 android:id="@+id/shippingPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Regular fit, full sleeve"
+                android:text="0712748950"
                 android:textSize="12dp"
                 android:textColor="@color/gen_black"/>
 
@@ -219,38 +188,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
             android:layout_height="@dimen/view_width_small"
             android:background="@color/grey_light"
             android:layout_marginTop="8dp"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:orientation="vertical">
-            <View android:layout_width="match_parent"
-                android:layout_height="@dimen/view_width_small"
-                android:background="@color/grey_light"
-                android:layout_marginTop="8dp"/>
-            <TextView android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Instructions"
-                android:textSize="16dp"
-                android:textStyle="bold"
-                />
-            <View android:layout_width="match_parent"
-                android:layout_height="@dimen/view_width_small"
-                android:background="@color/grey_light"
-                android:layout_marginTop="8dp"/>
 
-            <TextView
-                android:id="@+id/shippingInstruction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Regular fit, full sleeve"
-                android:textSize="12dp"
-                android:textColor="@color/gen_black"/>
-
-
-        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

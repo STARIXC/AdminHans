@@ -20,10 +20,18 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.starixc.adminhans.Adapters.OrderAdapter;
 import com.starixc.adminhans.Model.Order;
 import com.starixc.adminhans.viewHolder.OrderViewHolder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -34,9 +42,14 @@ public class OrdersFragment extends Fragment {
     private FragmentManager fm;
     private FragmentTransaction ft;
     private RecyclerView ordersList;
+    private OrderAdapter orderAdapter;
+
+   // private OrderViewHolder orderViewHolder;
     private RecyclerView.LayoutManager layoutManager;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference ordersRef = db.collection("Orders");
     private TextView txtTotalAmount,tvmsg;
-   private DatabaseReference ordersRef;
+  // private DatabaseReference ordersRef;
 
     public OrdersFragment() {
         // Required empty public constructor
@@ -48,106 +61,47 @@ public class OrdersFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         ordersView= inflater.inflate(R.layout.fragment_orders, container, false);
+//        ordersList =ordersView.findViewById(R.id.order_list_recycler);
+//        ordersList.setHasFixedSize(true);
+//
+//        layoutManager = new LinearLayoutManager(getActivity());
+       // ordersList.setLayoutManager(layoutManager);
 
-        ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders");
-
-        ordersList =ordersView.findViewById(R.id.order_list_recycler);
-        //ordersList.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getActivity());
-        ordersList.setLayoutManager(layoutManager);
-
-
+        loadOrderList();
 
         return  ordersView;
+
+    }
+
+    private void loadOrderList() {
+        Query query = ordersRef.orderBy("orderNo", Query.Direction.DESCENDING);
+        FirestoreRecyclerOptions<Order> options = new FirestoreRecyclerOptions.Builder<Order>()
+                .setQuery(query,Order.class)
+                .build();
+        orderAdapter = new OrderAdapter(options);
+        ordersList = ordersView.findViewById(R.id.order_list_recycler);
+        ordersList.setHasFixedSize(true);
+        ordersList.setLayoutManager(new LinearLayoutManager(getContext()));
+        ordersList.setAdapter(orderAdapter);
+
+
+
+
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        FirebaseRecyclerOptions<Order> options=
-                new FirebaseRecyclerOptions.Builder<Order>()
-                        .setQuery(ordersRef,Order.class)
-                        .build();
-        FirebaseRecyclerAdapter<Order, OrderViewHolder> adapter = new FirebaseRecyclerAdapter<Order, OrderViewHolder>(options) {
-            @Override
-            protected void onBindViewHolder(@NonNull OrderViewHolder orderViewHolder, final int i, @NonNull final Order order) {
-                orderViewHolder.txtOrderNo.setText("OrderNo :"+order.getOrderNo());
-                orderViewHolder.txtOrderDate.setText(order.getDate()+ " Time :" +order.getTime());
-                orderViewHolder.txtPrice.setText("Total Amount :" +order.getTotalAmount()+ " /=");
-                orderViewHolder.orderDetBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                         String uID= getRef(i).getKey();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("uid",uID);
-                        bundle.putString("orderNo",order.getOrderNo());
-                        bundle.putString("apartment",order.getApartment());
-                        bundle.putString("date",order.getDate());
-                        bundle.putString("name",order.getName());
-                        bundle.putString("phone",order.getPhone());
-                        bundle.putString("state",order.getState());
-                        bundle.putString("street",order.getStreet());
-                        bundle.putString("houseNo",order.getHouseNo());
-                        bundle.putString("totalAmount",order.getTotalAmount());
-                        bundle.putString("deliveryLocation",order.getDeliveryLocation());
-                        bundle.putString("Instruction",order.getInstruction());
-                        fm=getActivity().getSupportFragmentManager();
-                        ft =fm.beginTransaction();
-                        ViewOrderItemFragment viewOrderItemFragment= new ViewOrderItemFragment();
-                        viewOrderItemFragment.setArguments(bundle);
-                        ft.replace(R.id.fragment,viewOrderItemFragment) .addToBackStack(null);
-                        ft.commit();
-                    }
-                });
-                orderViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        CharSequence options[] =new CharSequence[]{
-                                "Yes",
-                                "No"
-
-                        };
-
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setTitle("Have you shipped this order products?");
-                        builder.setItems(options, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                if (i==0){
-                                    String uID = getRef(i).getKey();
-                                    RemoverOrder(uID);
-
-                                }
-                                else {
-                                    //finish();
-                                }
-
-                            }
-                        });
-                        builder.show();
-                    }
-                });
-
-            }
-
-            @NonNull
-            @Override
-            public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.orders_layout, parent,false);
-                OrderViewHolder holder = new OrderViewHolder(view);
-                return holder;
-            }
-        };
-        ordersList.setAdapter(adapter);
-        adapter.startListening();
+    orderAdapter.startListening();
 
     }
-    private void RemoverOrder(String uID) {
-        ordersRef.child(uID).removeValue();
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        orderAdapter.stopListening();
     }
 }
 
