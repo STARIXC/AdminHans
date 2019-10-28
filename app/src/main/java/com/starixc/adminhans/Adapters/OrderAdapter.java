@@ -20,7 +20,7 @@ import com.starixc.adminhans.R;
 import com.starixc.adminhans.viewHolder.OrderViewHolder;
 
 
-public class OrderAdapter extends FirestoreRecyclerAdapter<Order, OrderViewHolder> {
+public class OrderAdapter extends FirestoreRecyclerAdapter<Order, OrderAdapter.OrderViewHolder> {
     private OnItemClickListener listener;
     private FragmentManager fm;
     private FragmentTransaction ft;
@@ -52,12 +52,32 @@ public class OrderAdapter extends FirestoreRecyclerAdapter<Order, OrderViewHolde
         return holder;
 
     }
+    class OrderViewHolder extends RecyclerView.ViewHolder{
+        public TextView txtOrderNo, txtPrice,txtOrderDate;
+
+        public OrderViewHolder(@NonNull View itemView) {
+            super(itemView);
+            txtOrderDate =(TextView) itemView.findViewById(R.id.idOrderDate);
+            txtOrderNo= (TextView)itemView.findViewById(R.id.idOrderNo);
+            txtPrice = (TextView) itemView.findViewById(R.id.idOrderPriceTotal);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (position !=RecyclerView.NO_POSITION && listener!=null)
+                    {
+                        listener.onItemClick(getSnapshots().getSnapshot(position),position);
+                    }
+                }
+            });
+        }
+    }
 
     public interface  OnItemClickListener{
         void onItemClick(DocumentSnapshot documentSnapshot, int position);
 
     }
-    public void setOnClickListener(OrderAdapter.OnItemClickListener listener){
+    public void setOnClickListener(OnItemClickListener listener){
         this.listener= listener;
 
     }
