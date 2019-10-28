@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,26 +19,36 @@ import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 import com.starixc.adminhans.Model.Cart;
 import com.starixc.adminhans.Model.Order;
 import com.starixc.adminhans.viewHolder.CartViewHolder;
+
+import java.util.ArrayList;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ViewOrderItemFragment extends Fragment {
+    private static final ArrayList<String> TAG = new ArrayList<>();
     private RecyclerView productsList;
     RecyclerView.LayoutManager layoutManager;
     private DatabaseReference cartListRef;
-    private String userID = "";
+    private String orderID = "";
     private View ordersDetView;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private DocumentReference orderRef;
 
     private TextView orderNo,orderDate,orderPrice,orderState,orderName,orderStreet,orderLocation,orderApartment,orderHouseNo,orderPhone,orderInstruction;
 
@@ -50,6 +61,9 @@ public class ViewOrderItemFragment extends Fragment {
                              Bundle savedInstanceState) {
                // Inflate the layout for this fragment
         ordersDetView= inflater.inflate(R.layout.fragment_view_order_item, container, false);
+        Bundle bundle = getArguments();
+
+        orderID = bundle.getString("orderNo");
         orderNo=(TextView) ordersDetView.findViewById(R.id.idOrderDetNo);
         orderDate=(TextView) ordersDetView.findViewById(R.id.idOrderDetDate);
         orderPrice=(TextView) ordersDetView.findViewById(R.id.txtOrderPrice);
@@ -57,17 +71,14 @@ public class ViewOrderItemFragment extends Fragment {
         orderPhone=(TextView) ordersDetView.findViewById(R.id.shippingPhone);
         orderState=(TextView) ordersDetView.findViewById(R.id.txtState) ;
 
-        Bundle bundle = getArguments();
-
-        userID = bundle.getString("uid");
         productsList = (RecyclerView) ordersDetView.findViewById(R.id.cart_list_recycler);
         productsList.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         productsList.setLayoutManager(layoutManager);
-        cartListRef = FirebaseDatabase.getInstance().getReference().child("CartList").child("Admin view").child(userID).child("Products");
+//        cartListRef = FirebaseDatabase.getInstance().getReference().child("CartList").child("Admin view").child(userID).child("Products");
 
-        getOrderDetails(userID);
-        getCartItems(userID);
+        getOrderDetails(orderID);
+        getCartItems(orderID);
    return ordersDetView;
 
 
@@ -76,8 +87,8 @@ public class ViewOrderItemFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        Toast.makeText(getContext(), "Am not working " + userID, Toast.LENGTH_SHORT).show();
-        getCartItems(userID);
+       // Toast.makeText(getContext(), "Am not working " + userID, Toast.LENGTH_SHORT).show();
+       // getCartItems(userID);
     }
 
 
@@ -113,10 +124,26 @@ public class ViewOrderItemFragment extends Fragment {
         });
 
     }
-    private void getCartItems(String userID)
+    private void getCartItems(String orderID)
 
     {
-        cartListRef = FirebaseDatabase.getInstance().getReference().child("CartList").child("Admin view").child(userID).child("Products");
+        orderRef=db.collection("Orders").document(orderID);
+        orderRef.collection("orders").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        ArrayList<String> arrayList = (ArrayList<String>) document.get("orders");
+                        //Do what you need to do with your ArrayList
+                        for (String s : arrayList) {
+                            Log.d(TAG, s);
+                        }
+                    }
+                }
+            }
+        });
+        //cartListRef = FirebaseDatabase.getInstance().getReference().child("CartList").child("Admin view").child(userID).child("Products");
         FirebaseRecyclerOptions<Cart> options=
                 new FirebaseRecyclerOptions.Builder<Cart>()
                         .setQuery(cartListRef,Cart.class)

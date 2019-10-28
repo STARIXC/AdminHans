@@ -24,10 +24,13 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.starixc.adminhans.Adapters.OrderAdapter;
+import com.starixc.adminhans.Adapters.ProductAdapter;
 import com.starixc.adminhans.Model.Order;
+import com.starixc.adminhans.Model.Products;
 import com.starixc.adminhans.viewHolder.OrderViewHolder;
 
 import java.util.ArrayList;
@@ -84,7 +87,23 @@ public class OrdersFragment extends Fragment {
         ordersList.setLayoutManager(new LinearLayoutManager(getContext()));
         ordersList.setAdapter(orderAdapter);
 
-
+        orderAdapter.setOnClickListener(new OrderAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                Order order = documentSnapshot.toObject(Order.class);
+                String id =documentSnapshot.getId();
+                String path = documentSnapshot.getReference().getPath();
+                //Toast.makeText(getContext(), "Clicked", Toast.LENGTH_SHORT).show();
+                Bundle bundle = new Bundle();
+                bundle.putString("orderNo",id);
+                FragmentManager fm=getActivity().getSupportFragmentManager();
+                FragmentTransaction ft =fm.beginTransaction();
+                ViewOrderItemFragment viewOrderItemFragment= new ViewOrderItemFragment();
+               viewOrderItemFragment.setArguments(bundle);
+                ft.replace(R.id.fragment,viewOrderItemFragment) .addToBackStack(null);
+                ft.commit();
+            }
+        });
 
 
 

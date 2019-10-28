@@ -21,7 +21,7 @@ import com.starixc.adminhans.viewHolder.OrderViewHolder;
 
 
 public class OrderAdapter extends FirestoreRecyclerAdapter<Order, OrderViewHolder> {
-    private View.OnClickListener listener;
+    private OnItemClickListener listener;
     private FragmentManager fm;
     private FragmentTransaction ft;
 
@@ -50,6 +50,15 @@ public class OrderAdapter extends FirestoreRecyclerAdapter<Order, OrderViewHolde
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.orders_layout, parent, false);
         OrderViewHolder holder = new OrderViewHolder(view);
         return holder;
+
+    }
+
+    public interface  OnItemClickListener{
+        void onItemClick(DocumentSnapshot documentSnapshot, int position);
+
+    }
+    public void setOnClickListener(OrderAdapter.OnItemClickListener listener){
+        this.listener= listener;
 
     }
 }
