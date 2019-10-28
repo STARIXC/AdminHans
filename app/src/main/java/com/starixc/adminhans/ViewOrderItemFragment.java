@@ -37,6 +37,7 @@ import com.starixc.adminhans.Adapters.OrderItemAdapter;
 import com.starixc.adminhans.Model.Cart;
 import com.starixc.adminhans.Model.Order;
 import com.starixc.adminhans.Model.OrderProduct;
+import com.starixc.adminhans.Model.Orders;
 import com.starixc.adminhans.viewHolder.CartViewHolder;
 
 import java.util.ArrayList;
@@ -91,11 +92,6 @@ public class ViewOrderItemFragment extends Fragment {
 
 
     }
-    @Override
-    public void onStart() {
-        super.onStart();
-
-    }
 
 
     private void getOrderDetails(String orderID) {
@@ -122,6 +118,23 @@ public class ViewOrderItemFragment extends Fragment {
     private void getOrderItems(String orderID)
 
     {
+//        db.collection("Orders").document(orderID).collection("orders").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document.exists()) {
+//                        ArrayList<String> arrayList = (ArrayList<String>) document.get("orders");
+//                        //Do what you need to do with your ArrayList
+//                        for (String s : arrayList) {
+//                            Toast.makeText(getContext(), "", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                }
+//            }
+
+
+
       FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
       CollectionReference orderlistRef = rootRef.collection("Orders");
       orderlistRef.document(orderID).collection("orders").get()
@@ -130,11 +143,11 @@ public class ViewOrderItemFragment extends Fragment {
                   public void onComplete(@NonNull Task<QuerySnapshot> task) {
                       if (task.isSuccessful())
                       {
-                          List<OrderProduct> orderitemList = new ArrayList<>();
+                          List<Orders> orderitemList = new ArrayList<>();
                           for (QueryDocumentSnapshot document : task.getResult())
                           {
-                              OrderProduct orderProduct = document.toObject(OrderProduct.class);
-                              orderitemList.add(orderProduct);
+                              Orders orders = document.toObject(Orders.class);
+                              orderitemList.add(orders);
                           }
 
                           ordersList= (RecyclerView)ordersDetView.findViewById(R.id.order_list_recycler);
@@ -153,6 +166,18 @@ public class ViewOrderItemFragment extends Fragment {
 //        ordersList.setLayoutManager(new LinearLayoutManager(getContext()));
 //        ordersList.setAdapter(orderItemAdapter);
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //orderItemAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //orderItemAdapter.stopListening();
     }
 
 
