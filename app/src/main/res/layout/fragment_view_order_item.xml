@@ -177,12 +177,13 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
             android:layout_height="@dimen/view_width_small"
             android:background="@color/grey_light"
             android:layout_marginTop="8dp"/>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/order_list_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </androidx.recyclerview.widget.RecyclerView>
+       <Button
+           android:id="@+id/viewOrderItemsBtn"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:background="@color/colorPrimaryDark"
+           android:text="View ORDERED ITEMS"
+           android:textColor="@color/whiteTextColor" />
 
         <View android:layout_width="match_parent"
             android:layout_height="@dimen/view_width_small"

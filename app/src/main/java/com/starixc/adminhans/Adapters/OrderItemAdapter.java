@@ -1,5 +1,6 @@
 package com.starixc.adminhans.Adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,9 @@ import com.starixc.adminhans.R;
 import com.starixc.adminhans.viewHolder.OrderItemViewHolder;
 import com.starixc.adminhans.viewHolder.OrderViewHolder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class OrderItemAdapter extends FirestoreRecyclerAdapter<OrderProduct, OrderItemAdapter.OrdersHolder> {
     private OnItemClickListner listner;
     private FragmentManager fm;
@@ -32,6 +36,14 @@ public class OrderItemAdapter extends FirestoreRecyclerAdapter<OrderProduct, Ord
      */
     public OrderItemAdapter(@NonNull FirestoreRecyclerOptions<OrderProduct> options) {
         super(options);
+    }
+    private List<OrderProduct> itemsList = new ArrayList<>();
+    private Context context;
+
+    public OrderItemAdapter(@NonNull FirestoreRecyclerOptions<OrderProduct> options, List<OrderProduct> itemsList, Context context) {
+        super(options);
+        this.itemsList = itemsList;
+        this.context = context;
     }
 
     @Override

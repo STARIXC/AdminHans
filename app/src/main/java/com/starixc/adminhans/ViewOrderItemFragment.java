@@ -1,10 +1,14 @@
 package com.starixc.adminhans;
 
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +16,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,13 +33,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.starixc.adminhans.Adapters.OrderItemAdapter;
+import com.starixc.adminhans.Adapters.ProductsRecyclerViewAdapter;
 import com.starixc.adminhans.Model.Cart;
 import com.starixc.adminhans.Model.Order;
 import com.starixc.adminhans.Model.OrderProduct;
@@ -48,16 +58,19 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class ViewOrderItemFragment extends Fragment {
+
+    private static final String TAG ="ViewOrderItemsFragment";
     private View ordersDetView;
     private RecyclerView ordersList;
-    private OrderItemAdapter orderItemAdapter;
     //database references
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private DocumentReference orderRef;
+    private FirebaseFirestore db;
+//    private OrderItemAdapter orderItemAdapter;
 
-    RecyclerView.LayoutManager layoutManager;
+//    private DocumentReference orderRef;
+//
+//    RecyclerView.LayoutManager layoutManager;
     Order currentOrder;
-    OrderProduct orderProduct;
+//    OrderProduct orderProduct;
     private String orderID = "";
     private TextView orderNo,orderDate,orderPrice,orderState,orderName,orderPhone;
 
@@ -70,6 +83,7 @@ public class ViewOrderItemFragment extends Fragment {
                              Bundle savedInstanceState) {
                // Inflate the layout for this fragment
         ordersDetView= inflater.inflate(R.layout.fragment_view_order_item, container, false);
+        db=FirebaseFirestore.getInstance();
         Bundle bundle = getArguments();
 
         orderID = bundle.getString("orderNo");
@@ -79,24 +93,41 @@ public class ViewOrderItemFragment extends Fragment {
         orderName=(TextView) ordersDetView.findViewById(R.id.shippingName);
         orderPhone=(TextView) ordersDetView.findViewById(R.id.shippingPhone);
         orderState=(TextView) ordersDetView.findViewById(R.id.txtState) ;
-
-        ordersList = (RecyclerView) ordersDetView.findViewById(R.id.order_list_recycler);
-        ordersList.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getActivity());
-        ordersList.setLayoutManager(layoutManager);
-//        cartListRef = FirebaseDatabase.getInstance().getReference().child("CartList").child("Admin view").child(userID).child("Products");
-
+        Button viewOrderBtn=(Button) ordersDetView.findViewById(R.id.viewOrderItemsBtn);
+        viewOrderBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadOrderItems(orderID);
+            }
+        });
         getOrderDetails(orderID);
-        getOrderItems(orderID);
-   return ordersDetView;
+
+        return ordersDetView;
 
 
     }
 
+    private void loadOrderItems(String orderID) {
+        String id=orderID;
+        Bundle bundle = new Bundle();
+        bundle.putString("orderNo",id);
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        OrderedItemsFragment orderedItemsFragment = new OrderedItemsFragment();
+        orderedItemsFragment.setArguments(bundle);
+        ft.replace(R.id.fragment,orderedItemsFragment).addToBackStack(null);
+        ft.commit();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+    }
 
     private void getOrderDetails(String orderID) {
-        orderRef = db.collection("Orders").document(orderID);
-        orderRef.get()
+
+      db.collection("Orders").document(orderID)
+        .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -114,70 +145,6 @@ public class ViewOrderItemFragment extends Fragment {
                 });
 
 
-    }
-    private void getOrderItems(String orderID)
-
-    {
-//        db.collection("Orders").document(orderID).collection("orders").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        ArrayList<String> arrayList = (ArrayList<String>) document.get("orders");
-//                        //Do what you need to do with your ArrayList
-//                        for (String s : arrayList) {
-//                            Toast.makeText(getContext(), "", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                }
-//            }
-
-
-
-      FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
-      CollectionReference orderlistRef = rootRef.collection("Orders");
-      orderlistRef.document(orderID).collection("orders").get()
-              .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                  @Override
-                  public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                      if (task.isSuccessful())
-                      {
-                          List<Orders> orderitemList = new ArrayList<>();
-                          for (QueryDocumentSnapshot document : task.getResult())
-                          {
-                              Orders orders = document.toObject(Orders.class);
-                              orderitemList.add(orders);
-                          }
-
-                          ordersList= (RecyclerView)ordersDetView.findViewById(R.id.order_list_recycler);
-                          ordersList.setHasFixedSize(true);
-                          ordersList.setLayoutManager(new LinearLayoutManager(getContext()));
-                          ordersList.setAdapter(orderItemAdapter);
-                      }else{
-                          Toast.makeText(getContext(), "Error retrieving data", Toast.LENGTH_SHORT).show();
-                      }
-                  }
-              });
-
-
-//        ordersList= (RecyclerView)ordersDetView.findViewById(R.id.order_list_recycler);
-//        ordersList.setHasFixedSize(true);
-//        ordersList.setLayoutManager(new LinearLayoutManager(getContext()));
-//        ordersList.setAdapter(orderItemAdapter);
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        //orderItemAdapter.startListening();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        //orderItemAdapter.stopListening();
     }
 
 
