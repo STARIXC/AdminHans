@@ -106,5 +106,6 @@
     <string name="tequila">Tequila</string>
     <string name="vodka">Vodka</string>
     <string name="others">Others</string>
+    <string name="msg_no_notes">Order Items Not Found</string>
 
 </resources>

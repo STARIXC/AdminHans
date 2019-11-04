@@ -1,13 +1,13 @@
 package com.starixc.adminhans.Model;
 
 public class OrderProduct {
-    private String _id,discount,price,productId,productName,quantity,timeStamp;
+    private String id,discount,price,productId,productName,quantity,timeStamp;
 
     public OrderProduct() {
     }
 
-    public OrderProduct(String _id, String discount, String price, String productId, String productName, String quantity, String timeStamp) {
-        this._id = _id;
+    public OrderProduct(String id, String discount, String price, String productId, String productName, String quantity, String timeStamp) {
+        this.id = id;
         this.discount = discount;
         this.price = price;
         this.productId = productId;
@@ -16,12 +16,12 @@ public class OrderProduct {
         this.timeStamp = timeStamp;
     }
 
-    public String get_id() {
-        return _id;
+    public String getId() {
+        return id;
     }
 
-    public void set_id(String _id) {
-        this._id = _id;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getDiscount() {

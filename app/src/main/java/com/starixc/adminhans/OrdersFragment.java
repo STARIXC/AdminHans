@@ -64,9 +64,9 @@ public class OrdersFragment extends Fragment {
                 bundle.putString("orderNo",id);
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                ViewOrderItemFragment viewOrderItemFragment = new ViewOrderItemFragment();
-                viewOrderItemFragment.setArguments(bundle);
-                ft.replace(R.id.fragment,viewOrderItemFragment).addToBackStack(null);
+                ItemsFragment itemFragment = new ItemsFragment();
+                itemFragment.setArguments(bundle);
+                ft.replace(R.id.fragment,itemFragment).addToBackStack(null);
                 ft.commit();
             }
         });
