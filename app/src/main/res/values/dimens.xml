@@ -31,5 +31,6 @@
     <dimen name="text_size_xmedium">14dp</dimen>
     <dimen name="text_size_large">16dp</dimen>
     <dimen name="margin_top_no_notes">120dp</dimen>
+    <dimen name="_4dp">4dp</dimen>
 
 </resources>
