@@ -29,6 +29,7 @@ class OrderItemViewHolder extends RecyclerView.ViewHolder implements View.OnClic
         txtProductPrice = itemView.findViewById(R.id.idProductPrice);
         txtProductQuantity = itemView.findViewById(R.id.idProductQty);
         // txtProductTotal=itemView.findViewById(R.id.idProductPriceTotal);
+
     }
 
     public void setTxtProductName(TextView txtProductName) {

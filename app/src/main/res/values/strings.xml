@@ -96,7 +96,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="mixers">Mixers</string>
     <string name="ram">Ram</string>
@@ -107,5 +107,9 @@
     <string name="vodka">Vodka</string>
     <string name="others">Others</string>
     <string name="msg_no_notes">We do not have anything\nhere right now</string>
+    <string name="order_placed">Placed</string>
+    <string name="on_transit">On Transit</string>
+    <string name="order_shipped">Shipped</string>
+    <string name="add_category">Add Category</string>
 
 </resources>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_medium"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddCategoryFragment">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+       <LinearLayout
+           android:orientation="vertical"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+           <ImageView
+               android:id="@+id/select_category_img"
+               android:layout_width="150dp"
+               android:layout_height="150dp"
+               android:layout_marginTop="40dp"
+               android:layout_gravity="center"
+               android:layout_centerHorizontal="true"
+               android:cropToPadding="false"
+               android:scaleType="centerCrop"
+               android:src="@drawable/imageupload"
+               android:contentDescription="@string/upload_image" />
+
+           <EditText
+               android:id="@+id/category_name"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_below="@+id/select_category_img"
+               android:inputType="textAutoCorrect"
+               android:layout_marginTop="20dp"
+               android:padding="20dp"
+               android:hint="Category Name ..."
+               android:layout_marginLeft="50dp"
+               android:layout_marginRight="50dp"
+               android:background="@drawable/input_field_design"
+               />
+
+           <Button
+               android:id="@+id/add_new_category"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_below="@id/category_name"
+               android:text="Add Product"
+               android:layout_marginRight="50dp"
+               android:layout_marginLeft="50dp"
+               android:padding="17dp"
+               android:layout_marginTop="20dp"
+               android:layout_marginBottom="50dp"
+               android:textSize="18sp"
+               android:textColor="@color/whiteTextColor"
+               android:background="@drawable/buttons"
+               />
+       </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
