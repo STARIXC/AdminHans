@@ -16,8 +16,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,26 +30,37 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.squareup.picasso.Picasso;
 import com.starixc.adminhans.Adapters.CategoryAdapter;
 
+import com.starixc.adminhans.Adapters.MyRecyclerViewAdapter;
 import com.starixc.adminhans.Adapters.ProductAdapter;
 import com.starixc.adminhans.Model.Category;
 
 
 import com.starixc.adminhans.Adapters.CategoryAdapter.*;
+import com.starixc.adminhans.viewHolder.CategoryViewHolder;
+
+import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class CategoryFragment extends Fragment {
+    private static final String TAG="CategoryRecycler";
+    //private List<Category> categoriesList;
     private View categoryView;
     private RecyclerView myProductsList;
-    private CategoryAdapter categoryAdapter;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference categoryRef = db.collection("Category");
-    RecyclerView.LayoutManager layoutManager;
+//    private MyRecyclerViewAdapter adapter;
+    private ProgressBar progressBar;
+    private CategoryAdapter adapter;
+    private FirebaseFirestore db;
+    private Query query;
+    private  OnItemClickListener listener;
 
+    RecyclerView.LayoutManager layoutManager;
+   // private FirestoreRecyclerAdapter<Category, CategoryViewHolder> adapter;
 
     private FragmentManager fm;
     private FragmentTransaction ft;
@@ -60,6 +75,12 @@ public class CategoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         categoryView = inflater.inflate(R.layout.fragment_category, container, false);
+        progressBar=(ProgressBar) categoryView.findViewById(R.id.progress_bar);
+        myProductsList =(RecyclerView) categoryView.findViewById(R.id.recycler_menu_category);
+        myProductsList.setLayoutManager(new GridLayoutManager(getContext(),2));
+        db = FirebaseFirestore.getInstance();
+        final CollectionReference categoryRef = db.collection("Category");
+         query = categoryRef.orderBy("name", Query.Direction.ASCENDING);
         FloatingActionButton fab = (FloatingActionButton) categoryView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,36 +100,53 @@ public class CategoryFragment extends Fragment {
 
         return categoryView;
     }
-    @Override
-    public void onStart() {
-        super.onStart();
-        categoryAdapter.startListening();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        categoryAdapter.stopListening();
-    }
 
 
     private void setUpRecyclerView() {
-        Query query = categoryRef;
+
         FirestoreRecyclerOptions<Category> options = new FirestoreRecyclerOptions.Builder<Category>()
                 .setQuery(query, Category.class)
                 .build();
-        categoryAdapter = new CategoryAdapter(options);
-        myProductsList =(RecyclerView) categoryView.findViewById(R.id.recycler_menu_category);
-        myProductsList.setHasFixedSize(true);
-        myProductsList.setLayoutManager(new GridLayoutManager(getContext(),2));
-        myProductsList.setAdapter(categoryAdapter);
-        categoryAdapter.setOnClickListener(new OnItemClickListener() {
+        adapter= new CategoryAdapter(options);
+
+//        adapter=new FirestoreRecyclerAdapter<Category, CategoryFragment.CategoryViewHolder>(options) {
+//            @Override
+//            protected void onBindViewHolder(@NonNull CategoryFragment.CategoryViewHolder holder, int position, @NonNull Category model) {
+//                    holder.setData(model.getName(),model.getImage());
+//                progressBar.setVisibility(View.GONE);
+//            }
+//
+//            @NonNull
+//            @Override
+//            public CategoryFragment.CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//                View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.list_row,parent,false);
+//
+//                return new CategoryFragment.CategoryViewHolder(view);
+//            }
+//        };
+        myProductsList.setAdapter(adapter);
+       // adapter.startListening();
+        adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 showActionDialog(documentSnapshot, position);
             }
         });
 
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (adapter !=null){
+            adapter.stopListening();
+        }
     }
 
     private void showActionDialog(final DocumentSnapshot documentSnapshot, final int position) {
@@ -124,10 +162,12 @@ public class CategoryFragment extends Fragment {
                 if (i == 0) {
                     Category category = documentSnapshot.toObject(Category.class);
                     String id = documentSnapshot.getId();
+                    String name=category.getName();
 
                     String path = documentSnapshot.getReference().getPath();
                     //Toast.makeText(getContext(), "Clicked", Toast.LENGTH_SHORT).show();
                     Bundle bundle = new Bundle();
+                    bundle.putString("category",name);
                     bundle.putString("cid", id);
                     fm = getActivity().getSupportFragmentManager();
                     ft = fm.beginTransaction();
@@ -165,5 +205,34 @@ public class CategoryFragment extends Fragment {
                 });
     }
 
+//    private class CategoryViewHolder extends RecyclerView.ViewHolder {
+//        private View view;
+//
+//        CategoryViewHolder(View itemView) {
+//            super(itemView);
+//            view = itemView;
+//            view.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//
+//                }
+//            });
+//        }
+//
+//        void setData(String dataTitle, String dataBody) {
+//            TextView title = view.findViewById(R.id.title);
+//            ImageView content = view.findViewById(R.id.thumbnail);
+//            title.setText(dataTitle);
+//            Picasso.get().load(dataBody).into(content);
+//        }
+//    }
+//    public interface  OnItemClickListener{
+//        void onItemClick(DocumentSnapshot documentSnapshot, int position);
+//
+//    }
+//    public void setOnItemClickListener(OnItemClickListener listener){
+//        this.listener= listener;
+//
+//    }
 
 }

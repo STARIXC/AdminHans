@@ -1,16 +1,14 @@
 package com.starixc.adminhans;
 
 
-import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 
 /**
@@ -18,7 +16,7 @@ import android.widget.ImageView;
  */
 public class HomeFragment extends Fragment {
 
-    private ImageView category, products, orders, feedback, users, transactions;
+    private ImageView category, products, orders, transactions;
     private View itemView;
     private FragmentTransaction fr;
     public HomeFragment() {
@@ -34,8 +32,8 @@ public class HomeFragment extends Fragment {
         category = (ImageView) itemView.findViewById(R.id.category);
         products = (ImageView) itemView.findViewById(R.id.products);
         orders = (ImageView) itemView.findViewById(R.id.orders);
-        feedback = (ImageView) itemView.findViewById(R.id.feedBack);
-        users = (ImageView) itemView.findViewById(R.id.userList);
+//        feedback = (ImageView) itemView.findViewById(R.id.feedBack);
+//        users = (ImageView) itemView.findViewById(R.id.userList);
         transactions = (ImageView) itemView.findViewById(R.id.transactions);
 
         category.setOnClickListener(new View.OnClickListener() {
@@ -62,27 +60,27 @@ public class HomeFragment extends Fragment {
                 fr.commit();
             }
         });
-        feedback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fr=getFragmentManager().beginTransaction();
-                fr.replace(R.id.fragment,new FeedBackFragment()).addToBackStack(null);
-                fr.commit();
-            }
-        });
-        users.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fr=getFragmentManager().beginTransaction();
-                fr.replace(R.id.fragment,new UsersFragment()).addToBackStack(null);
-                fr.commit();
-            }
-        });
+//        feedback.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                fr=getFragmentManager().beginTransaction();
+//                fr.replace(R.id.fragment,new FeedBackFragment()).addToBackStack(null);
+//                fr.commit();
+//            }
+//        });
+//        users.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                fr=getFragmentManager().beginTransaction();
+//                fr.replace(R.id.fragment,new UsersFragment()).addToBackStack(null);
+//                fr.commit();
+//            }
+//        });
         transactions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 fr=getFragmentManager().beginTransaction();
-                fr.replace(R.id.fragment,new AddProductFragment()).addToBackStack(null);
+                fr.replace(R.id.fragment,new TransactionFragment()).addToBackStack(null);
                 fr.commit();
             }
         });

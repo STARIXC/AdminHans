@@ -20,61 +20,61 @@ import com.starixc.adminhans.R;
 
 public class CategoryAdapter extends FirestoreRecyclerAdapter<Category, CategoryAdapter.CategoryHolder> {
     private OnItemClickListener listener;
-    private FragmentManager fm;
-    private FragmentTransaction ft;
-    /**
-     * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
-     * FirestoreRecyclerOptions} for configuration options.
-     *
-     * @param options
-     */
+
     public CategoryAdapter(@NonNull FirestoreRecyclerOptions<Category> options) {
         super(options);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull CategoryHolder holder, int position, @NonNull Category model) {
-        holder.txtCategoryName.setText(model.getName());
-        Picasso.get().load(model.getImage()).into(holder.imageView);
+    protected void onBindViewHolder(@NonNull CategoryAdapter.CategoryHolder holder, int position, @NonNull Category model) {
+        holder.setData(model.getName(), model.getImage());
+
     }
 
     @NonNull
     @Override
-    public CategoryHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_category,parent,false);
+    public CategoryAdapter.CategoryHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_row, parent, false);
 
         return new CategoryHolder(view);
+
     }
 
+    public void deleteItem(int position) {
+        getSnapshots().getSnapshot(position).getReference().delete();
+    }
+
+    public class CategoryHolder extends RecyclerView.ViewHolder {
+        private View view;
+
+        public CategoryHolder(@NonNull View itemView) {
+            super(itemView);
+            view = itemView;
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && listener != null) {
+                        listener.onItemClick(getSnapshots().getSnapshot(position), position);
+                    }
+                }
+            });
+        }
 
 
-    class CategoryHolder extends RecyclerView.ViewHolder {
-        public TextView txtCategoryName;
-        public ImageView imageView;
+        public void setData(String dataTitle, String dataBody) {
+            TextView title = view.findViewById(R.id.title);
+            ImageView content = view.findViewById(R.id.thumbnail);
+            title.setText(dataTitle);
+            Picasso.get().load(dataBody).into(content);
+        }
+    }
 
-         public CategoryHolder(@NonNull View itemView) {
-             super(itemView);
-             imageView=(ImageView)itemView.findViewById(R.id.category_image);
-             txtCategoryName=(TextView)itemView.findViewById(R.id.category_view_name);
-             itemView.setOnClickListener(new View.OnClickListener() {
-                 @Override
-                 public void onClick(View view) {
-                     int position = getAdapterPosition();
-                     if (position !=RecyclerView.NO_POSITION && listener !=null)
-                     {
-                         listener.onItemClick(getSnapshots().getSnapshot(position),position);
-                     }
-
-                 }
-             });
-         }
-     }
-    public interface  OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemClick(DocumentSnapshot documentSnapshot, int position);
-
     }
-    public void setOnClickListener(OnItemClickListener listener){
-        this.listener= listener;
 
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 }

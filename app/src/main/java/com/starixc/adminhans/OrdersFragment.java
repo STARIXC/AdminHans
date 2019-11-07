@@ -45,7 +45,7 @@ public class OrdersFragment extends Fragment {
         return  ordersView;
     }
     private void loadOrderList() {
-        Query query = ordersRef.orderBy("orderNo", Query.Direction.DESCENDING);
+        Query query = ordersRef.whereEqualTo("state","0").orderBy("orderNo", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<Order> options = new FirestoreRecyclerOptions.Builder<Order>()
                 .setQuery(query,Order.class)
                 .build();

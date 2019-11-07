@@ -4,10 +4,15 @@ package com.starixc.adminhans;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.starixc.adminhans.Adapters.FeedBackAdapter;
 
 
 /**
@@ -15,7 +20,11 @@ import android.view.ViewGroup;
  */
 public class FeedBackFragment extends Fragment {
 
-
+    private View tView;
+    private RecyclerView tList;
+    private FeedBackAdapter tAdapter;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private DocumentReference ordersRef = db.collection("Orders").document();
     public FeedBackFragment() {
         // Required empty public constructor
     }

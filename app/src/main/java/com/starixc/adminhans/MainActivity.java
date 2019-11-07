@@ -116,16 +116,16 @@ public class MainActivity extends AppCompatActivity  {
             case R.id.productsFragment:
                 fragmentClass = ProductsFragment.class;
                 break;
-
-            case R.id.profileFragment:
-                fragmentClass = ProfileFragment.class;
-                break;
+//
+//            case R.id.profileFragment:
+//                fragmentClass = ProfileFragment.class;
+//                break;
             case R.id.nav_Order:
                 fragmentClass = OrdersFragment.class;
                 break;
-            case R.id.feedBackFragment:
-                fragmentClass = FeedBackFragment.class;
-                break;
+//            case R.id.feedBackFragment:
+//                fragmentClass = FeedBackFragment.class;
+//                break;
             default:
                 fragmentClass = HomeFragment.class;
         }

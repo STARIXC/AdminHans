@@ -43,6 +43,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     public int getItemCount() {
         return itemsList.size();
     }
+
+    public void setItemsList(List<OrderProduct> itemsList) {
+        this.itemsList = itemsList;
+    }
+
     @Override
     public long getItemId(int position) {
         return position;
@@ -53,9 +58,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     }
 
     public void addItems(List<OrderProduct> itemList) {
-
+        // itemList.clear();
         itemsList.addAll(itemList);
-        // itemsList.clear();
+
         notifyDataSetChanged();
     }
 

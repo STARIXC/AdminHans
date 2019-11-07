@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FeedBackFragment">
-
+    tools:context=".TransactionFragment">
     <RelativeLayout
-        android:id="@+id/feedBack"
+        android:id="@+id/transaction"
         android:layout_margin="@dimen/margin_md"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/feedback_list_recycler"
+            android:id="@+id/transaction_list_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
     </RelativeLayout>
 
-</FrameLayout>
+</RelativeLayout>
