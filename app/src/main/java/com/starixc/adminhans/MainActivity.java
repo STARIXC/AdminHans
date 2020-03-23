@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 import com.starixc.adminhans.Model.Products;
+import com.starixc.adminhans.service.ListenOrder;
 import com.starixc.adminhans.viewHolder.ProductViewHolder;
 
 public class MainActivity extends AppCompatActivity  {
@@ -74,6 +75,11 @@ public class MainActivity extends AppCompatActivity  {
         Fragment fragment =new HomeFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fragment, fragment).addToBackStack(null).commit();
+   //Register Service
+        Intent service = new Intent(MainActivity.this, ListenOrder.class);
+        startService(service);
+
+
     }
     private ActionBarDrawerToggle setupDrawerToggle(){
         return new ActionBarDrawerToggle(this, drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);

@@ -1,6 +1,7 @@
 package com.starixc.adminhans;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.starixc.adminhans.service.ListenOrder;
 
 
 /**
@@ -84,7 +87,9 @@ public class HomeFragment extends Fragment {
                 fr.commit();
             }
         });
-
+//Register Service
+        Intent service = new Intent(getActivity(), ListenOrder.class);
+        getActivity().startService(service);
     return itemView;
     }
 

@@ -67,6 +67,7 @@ class OrderItemViewHolder extends RecyclerView.ViewHolder implements View.OnClic
         public void onBindViewHolder(@NonNull OrderItemViewHolder holder, int position) {
             holder.txtProductName.setText(itemsList.get(position).getProductName());
             holder.txtProductQuantity.setText(itemsList.get(position).getQuantity());
+
             //holder.txtProductPrice.setText(itemList.get(position).getPrice());
             Locale locale = new Locale("en","KE");
             NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);

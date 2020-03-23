@@ -10,14 +10,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,9 +28,11 @@ import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.starixc.adminhans.Adapters.CustomAdapter;
 import com.starixc.adminhans.Model.Order;
 import com.starixc.adminhans.Model.OrderProduct;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,18 +45,20 @@ public class ViewOrderItemFragment extends Fragment {
     private View ordersDetView;
     Order currentOrder;
     protected FirebaseFirestore db;
-    private CollectionReference requests ;
+    private CollectionReference requests;
     private String orderID = "";
     private RecyclerView recyclerView;
     private CustomAdapter adapter;
     List<OrderProduct> itemsList;
     private Order item;
     private OrderProduct orderProduct;
-    private TextView orderNo, orderDate, orderPrice, orderState, orderName, orderPhone,orderStateBtn ;
+    private TextView orderNo, orderDate, orderPrice, orderState, orderName, orderPhone, orderStateBtn;
     MaterialSpinner spinner;
+
     public ViewOrderItemFragment() {
         // Required empty public constructor
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -75,7 +75,7 @@ public class ViewOrderItemFragment extends Fragment {
         orderName = (TextView) ordersDetView.findViewById(R.id.shippingName);
         orderPhone = (TextView) ordersDetView.findViewById(R.id.shippingPhone);
         orderState = (TextView) ordersDetView.findViewById(R.id.txtState);
-        orderStateBtn=(TextView) ordersDetView.findViewById(R.id.completeOrder);
+        orderStateBtn = (TextView) ordersDetView.findViewById(R.id.completeOrder);
         getOrderDetails(orderID);
         orderStateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,19 +85,20 @@ public class ViewOrderItemFragment extends Fragment {
         });
         return ordersDetView;
     }
+
     private void showActionDialog() {
-        CharSequence colors[]= new CharSequence[]
+        CharSequence colors[] = new CharSequence[]
                 {
-                        "Update","Delete"
+                        "Update", "Delete"
                 };
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Choose Option");
         builder.setItems(colors, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (i==0){
+                if (i == 0) {
                     showAlertDialog();
-                } else{
+                } else {
                     deleteOrder(orderID);
                 }
             }
@@ -145,22 +146,22 @@ public class ViewOrderItemFragment extends Fragment {
         alert.setMessage("Please change status");
 
         final View CustomDialog = getLayoutInflater().inflate(R.layout.custom_dialog, null);
-        spinner=(MaterialSpinner)CustomDialog.findViewById(R.id.statusSpinner);
-        spinner.setItems("Placed","On my way","Shipped");
-        final String orderNo =orderID;
+        spinner = (MaterialSpinner) CustomDialog.findViewById(R.id.statusSpinner);
+        spinner.setItems("Placed", "On my way", "Shipped");
+        final String orderNo = orderID;
         alert.setView(CustomDialog);
         alert.setCancelable(false);
         alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
-                    dialog.dismiss();
-            //item.setState(String.valueOf(spinner.getSelectedIndex()));
-            int option=spinner.getSelectedIndex();
-            String selected=String.valueOf(option);
-           requests=db.collection("Orders");
-           requests.document(orderNo).update("state",selected);
-           getOrderDetails(orderNo);
- }
+                dialog.dismiss();
+                //item.setState(String.valueOf(spinner.getSelectedIndex()));
+                int option = spinner.getSelectedIndex();
+                String selected = String.valueOf(option);
+                requests = db.collection("Orders");
+                requests.document(orderNo).update("state", selected);
+                getOrderDetails(orderNo);
+            }
         });
         alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
             @Override
@@ -172,16 +173,9 @@ public class ViewOrderItemFragment extends Fragment {
         alert.show();
 
     }
+
     private void setUp(String orderID) {
         loadOrderItems(orderID);
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new CustomAdapter(getActivity(), itemsList);
-        adapter.setHasStableIds(true);
-        recyclerView.setAdapter(adapter);
-
-
     }
 
     private void loadOrderItems(String orderID) {
@@ -201,7 +195,7 @@ public class ViewOrderItemFragment extends Fragment {
                     if (jsonObject != null) {
                         JSONArray list = jsonObject.getJSONArray("listOrders");
                         if (list != null) {
-                            itemsList.clear();
+
                             for (int i = 0; i < list.length(); i++) {
                                 JSONObject dataobj = list.getJSONObject(i);
                                 if (dataobj != null) {
@@ -213,13 +207,16 @@ public class ViewOrderItemFragment extends Fragment {
                                     orderProduct.setTimeStamp(dataobj.getString("timeStamp"));
                                     orderProduct.setProductName(dataobj.getString("productName"));
                                     orderProduct.setQuantity(dataobj.getString("quantity"));
-                                    orderProduct.setQuantity(dataobj.getString("price"));
+                                    orderProduct.setPrice(dataobj.getString("price"));
                                     itemsList.add(orderProduct);
-                               }
+                                }
                             }
                             // itemsList.clear();
-                            adapter.addItems(itemsList);
-                            adapter.notifyDataSetChanged();
+                            adapter = new CustomAdapter(getContext(), itemsList);
+                            recyclerView.setAdapter(adapter);
+                            recyclerView.setHasFixedSize(true);
+                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+                            recyclerView.setLayoutManager(layoutManager);
                         }
                     }
                 } catch (JSONException e) {
@@ -247,17 +244,14 @@ public class ViewOrderItemFragment extends Fragment {
                             orderPrice.setText(currentOrder.getTotal());
                             orderName.setText(currentOrder.getName());
                             orderPhone.setText(currentOrder.getPhone());
-                            String ordersState=currentOrder.getState();
-                            if (ordersState.equals("0")){
+                            String ordersState = currentOrder.getState();
+                            if (ordersState.equals("0")) {
                                 orderState.setText(R.string.order_placed);
-                            }
-
-                            else if (currentOrder.getState().equals("1")) {
+                            } else if (currentOrder.getState().equals("1")) {
                                 orderState.setText(R.string.on_transit);
-                            }
-                           else if (currentOrder.getState().equals("2")) {
+                            } else if (currentOrder.getState().equals("2")) {
                                 orderState.setText(R.string.order_shipped);
-                            }else {
+                            } else {
                                 orderState.setText(R.string.order_placed);
                             }
 

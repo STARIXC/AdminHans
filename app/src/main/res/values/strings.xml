@@ -111,5 +111,6 @@
     <string name="on_transit">On Transit</string>
     <string name="order_shipped">Shipped</string>
     <string name="add_category">Add Category</string>
+    <string name="default_notification_channel_id">AdminChannel</string>
 
 </resources>

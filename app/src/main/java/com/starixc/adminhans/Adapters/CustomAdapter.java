@@ -12,56 +12,48 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.starixc.adminhans.Model.OrderProduct;
 import com.starixc.adminhans.R;
 
+import java.util.Collections;
 import java.util.List;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
     private Context context;
-    private List<OrderProduct> itemsList;
+    private LayoutInflater inflater;
+    private List<OrderProduct> itemsList = Collections.emptyList();
+    OrderProduct current;
+    int currentPos = 0;
+
     public CustomAdapter(Context context, List<OrderProduct> itemsList) {
         this.context = context;
+        inflater = LayoutInflater.from(context);
         this.itemsList = itemsList;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
-        return new ViewHolder(itemView);
-    }
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.productName.setText(itemsList.get(position).getProductName());
-        holder.productPrice.setText(itemsList.get(position).getPrice());
-        holder.productQuantity.setText(itemsList.get(position).getQuantity());
+        View itemView = inflater.inflate(R.layout.list_item, parent, false);
+        ViewHolder holder = new ViewHolder(itemView);
+        return holder;
     }
 
     @Override
-    public void setHasStableIds(boolean hasStableIds) {
-        super.setHasStableIds(hasStableIds);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        ViewHolder myHolder = (ViewHolder) holder;
+        OrderProduct current = itemsList.get(position);
+        myHolder.productName.setText(current.getProductName());
+        myHolder.productPrice.setText(" Ksh. :" + current.getPrice() + "/=");
+        myHolder.productQuantity.setText("QTY: " + current.getQuantity());
     }
+
     @Override
     public int getItemCount() {
         return itemsList.size();
     }
 
-    public void setItemsList(List<OrderProduct> itemsList) {
-        this.itemsList = itemsList;
-    }
 
     @Override
     public long getItemId(int position) {
         return position;
-    }
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
-
-    public void addItems(List<OrderProduct> itemList) {
-        // itemList.clear();
-        itemsList.addAll(itemList);
-
-        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
